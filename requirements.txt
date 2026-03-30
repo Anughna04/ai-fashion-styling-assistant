@@ -1,0 +1,12 @@
+streamlit
+torch
+torchvision
+transformers
+faiss-cpu==1.10.0
+pillow
+numpy
+pandas
+sentence-transformers
+datasets
+python-dotenv
+google-generativeai

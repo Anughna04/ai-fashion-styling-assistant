@@ -1,0 +1,75 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# VS Code / IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment variables / secrets
+.env
+.env.local
+
+# API keys / config files
+config.py
+secrets.json
+*.key
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Model files / large files
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.h5
+
+# FAISS / embeddings / data
+*.faiss
+*.pkl
+*.npy
+data/
+datasets/
+
+# Temporary files
+tmp/
+temp/
+
+# Cache
+.cache/
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Deployment
+*.sqlite3
+*.db
+
+# Mac system files
+.AppleDouble
+.LSOverride
