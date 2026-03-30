@@ -41,21 +41,19 @@ The system combines multimodal embeddings, semantic search, and LLM reasoning to
 
 ```mermaid
 flowchart TD
-    A[User Input (Image + Text)] --> B[Input Processing Layer]
-    B --> C[Multimodal Embedding (Fashion-CLIP)]
-    B --> D[Query Understanding (FashionBERT)]
-    C --> E[FAISS Vector Index]
-    D --> F[Attribute Extraction]
-    E --> G[Top-K Retrieval]
-    F --> H[Context Filtering (Occasion, Season)]
+    A["User Input: Image and Text"] --> B["Input Processing Layer"]
+    B --> C["Multimodal Embedding: Fashion-CLIP"]
+    B --> D["Query Understanding: FashionBERT"]
+    C --> E["FAISS Vector Index"]
+    D --> F["Attribute Extraction"]
+    E --> G["Top-K Retrieval"]
+    F --> H["Context Filtering: Occasion, Season"]
     G --> H
-    H --> I[RAG Context Builder]
-    I --> J[LLM Reasoning (Groq - Llama 3.3)]
-    J --> K[Styled Recommendations]
-    K --> L[Streamlit UI Output]
+    H --> I["RAG Context Builder"]
+    I --> J["LLM Reasoning: Groq Llama 3.3"]
+    J --> K["Styled Recommendations"]
+    K --> L["Streamlit UI Output"]
 ```
-
----
 
 ## 🔄 Workflow
 
