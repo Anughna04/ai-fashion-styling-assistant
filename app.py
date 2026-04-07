@@ -18,11 +18,11 @@ import base64
 # Load environment variables
 load_dotenv()
 
-# Configure Gemini (optional - works without it too)
+# Configure Gemini
 try:
-    genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+    gemini_client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
     GEMINI_AVAILABLE = True
-except:
+except Exception:
     GEMINI_AVAILABLE = False
 
 @st.cache_resource

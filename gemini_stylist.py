@@ -2,17 +2,21 @@
 Gemini AI Stylist - Generates personalized fashion recommendations
 """
 
-import google.generativeai as genai
-from config import GEMINI_API_KEY
+from google import genai
+import os
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class GeminiStylist:
     """AI Fashion Stylist using Gemini"""
     
     def __init__(self):
-        if GEMINI_API_KEY and GEMINI_API_KEY != "your_actual_gemini_api_key_here":
-            genai.configure(api_key=GEMINI_API_KEY)
-            self.model = genai.GenerativeModel('gemini-3-pro-preview')
+        # We fetch explicitly after load_dotenv ensures variables are in os.environ
+        api_key = os.getenv("GEMINI_API_KEY")
+        if api_key and api_key != "your_actual_gemini_api_key_here":
+            self.client = genai.Client(api_key=api_key)
             self.available = True
             print("✅ Gemini AI Stylist initialized")
         else:
@@ -120,7 +124,7 @@ Provide specific recommendations:
 - Which pieces are worth investing in
 - Mix high and low fashion tips
 - How to restyle items for different occasions
-
+Ensure all sentences and bullet points are written as single continuous lines without any line breaks within a sentence or phrase.
 ## ⚠️ WHAT TO AVOID
 
 - Common styling mistakes for this occasion
@@ -131,7 +135,10 @@ Provide specific recommendations:
 Be warm, encouraging, and specific. Give exact details, not vague suggestions. Make the client feel confident and excited about their outfit choices!"""
 
         try:
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt
+            )
             return response.text
         except Exception as e:
             print(f"❌ Gemini error: {e}")

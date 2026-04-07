@@ -22,6 +22,8 @@ class FashionCLIP:
         with torch.no_grad():
             inputs = self.processor(images=image, return_tensors="pt")
             image_features = self.model.get_image_features(**inputs)
+            if not isinstance(image_features, torch.Tensor):
+                image_features = getattr(image_features, 'image_embeds', getattr(image_features, 'pooler_output', image_features[0]))
             # Normalize embeddings
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             return image_features.cpu().numpy()
@@ -31,6 +33,8 @@ class FashionCLIP:
         with torch.no_grad():
             inputs = self.processor(text=[text], return_tensors="pt", padding=True)
             text_features = self.model.get_text_features(**inputs)
+            if not isinstance(text_features, torch.Tensor):
+                text_features = getattr(text_features, 'text_embeds', getattr(text_features, 'pooler_output', text_features[0]))
             # Normalize embeddings
             text_features = text_features / text_features.norm(dim=-1, keepdim=True)
             return text_features.cpu().numpy()

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Styling Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- AUTHENTICATION VIEW -->
+    <div id="auth-view" class="view-container active">
+        <div class="auth-split">
+            <!-- Left Side - Animated Character -->
+            <div class="auth-graphic" style="background: linear-gradient(135deg, #FADADD 0%, #E6E6FA 50%, #D6EAF8 100%);">
+                <div class="welcome-content slide-in-left">
+                    <div class="character-wrapper floating-anim img-wrapper">
+                        <img src="images.png" alt="StyleGenie Hero" class="hero-img">
+                    </div>
+                    <h2 class="brand-title">StyleGenie AI</h2>
+                    <p class="tagline">From ethnic elegance to modern trends, find the style that truly fits you.</p>
+                    <div class="feature-chips">
+                        <span class="f-chip">AI-Powered</span>
+                        <span class="f-chip">Personalized</span>
+                        <span class="f-chip">Trendy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Login Form -->
+            <div class="auth-form-container">
+                <!-- Floating Emojis Background -->
+                <div class="floating-emojis">
+                    <span class="f-emoji emoji-1" style="top: 15%; left: 15%; font-size: 2.5rem; opacity: 0.8;">✨</span>
+                    <span class="f-emoji emoji-2" style="top: 25%; left: 80%; font-size: 3rem; opacity: 0.7;">👗</span>
+                    <span class="f-emoji emoji-3" style="top: 75%; left: 20%; font-size: 2.8rem; opacity: 0.6;">👠</span>
+                    <span class="f-emoji emoji-4" style="top: 10%; left: 60%; font-size: 2.2rem; opacity: 0.9;">💄</span>
+                    <span class="f-emoji emoji-5" style="top: 65%; left: 75%; font-size: 3.5rem; opacity: 0.75;">👜</span>
+                </div>
+
+                <div id="login-form-box" class="form-box pop-in">
+                    <div class="auth-box-header">
+                        <div class="icon-circle" style="background: linear-gradient(135deg, #FADADD 0%, #E6E6FA 100%);"><i class="fa fa-sparkles"></i></div>
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to continue your style journey</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Email</label>
+                        <div class="relative">
+                            <i class="fa fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="relative">
+                            <i class="fa fa-lock input-icon"></i>
+                            <input type="password" id="login-password" placeholder="••••••••">
+                        </div>
+                    </div>
+                    
+                    <button id="login-btn" class="primary-btn pulse-glow" style="background: linear-gradient(135deg, #FFB6B9 0%, #FEC8D8 50%, #E6E6FA 100%);">Sign In</button>
+                    <button id="go-to-signup" class="secondary-btn" style="border-color: #FADADD; color: #8B7BA8;">Create Account</button>
+                    <p class="forgot-txt"><a href="#">Forgot password?</a></p>
+                </div>
+                
+                <div id="signup-form-box" class="form-box hidden pop-in">
+                    <!-- Signup steps same as before but styled with Figma colors -->
+                    <div class="auth-box-header">
+                        <div class="icon-circle" style="background: linear-gradient(135deg, #FADADD 0%, #E6E6FA 100%);"><i class="fa fa-user-plus"></i></div>
+                        <h2>Create Account</h2>
+                        <p>Join StyleGenie today</p>
+                    </div>
+                    <div class="step-indicator">Step <span id="current-step">1</span> of 3</div>
+                    
+                    <div id="signup-step-1" class="signup-step active">
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <div class="relative">
+                                <i class="fa fa-user input-icon"></i>
+                                <input type="text" id="signup-name" placeholder="Your Name">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <div class="relative">
+                                <i class="fa fa-envelope input-icon"></i>
+                                <input type="email" id="signup-email" placeholder="your@email.com">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Password</label>
+                            <div class="relative">
+                                <i class="fa fa-lock input-icon"></i>
+                                <input type="password" id="signup-password" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button class="primary-btn pulse-glow next-step" data-target="2" style="background: linear-gradient(135deg, #FFB6B9 0%, #FEC8D8 100%);">Next Step</button>
+                    </div>
+                    
+                    <div id="signup-step-2" class="signup-step">
+                        <div class="input-group">
+                            <label>Gender Preference</label>
+                            <select id="signup-gender">
+                                <option value="">Select Option</option>
+                                <option value="female">Female Styles</option>
+                                <option value="male">Male Styles</option>
+                                <option value="unisex">Unisex Styles</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Primary Fashion Focus</label>
+                            <select id="signup-style-type">
+                                <option value="Western">Global / Western Trends</option>
+                                <option value="Indian">Indian Ethnic Elegance</option>
+                            </select>
+                        </div>
+                        <button class="primary-btn pulse-glow next-step" data-target="3" style="background: linear-gradient(135deg, #FFB6B9 0%, #FEC8D8 100%);">Next Step</button>
+                        <button class="secondary-btn prev-step" data-target="1" style="border-color: #FADADD; color: #8B7BA8;">Back</button>
+                    </div>
+                    
+                    <div id="signup-step-3" class="signup-step">
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">Select Favorite Style Vibes</p>
+                        <div class="chip-group" id="style-chips">
+                            <div class="chip" data-val="casual">Casual</div>
+                            <div class="chip" data-val="streetwear">Streetwear</div>
+                            <div class="chip" data-val="elegant">Elegant</div>
+                            <div class="chip" data-val="ethnic">Ethnic</div>
+                            <div class="chip" data-val="minimalist">Minimalist</div>
+                            <div class="chip" data-val="boho">Boho</div>
+                        </div>
+                        <input type="hidden" id="selected-styles">
+                        <button id="complete-signup-btn" class="primary-btn pulse-glow" style="background: linear-gradient(135deg, #E6E6FA 0%, #D6EAF8 100%); color: #4a235a;">Complete Signup</button>
+                        <button class="secondary-btn prev-step" data-target="2" style="border-color: #FADADD; color: #8B7BA8;">Back</button>
+                    </div>
+                
+                    <p class="switch-auth">Already have an account? <a href="#" id="go-to-login">Log in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-view" class="view-container hidden">
+        <nav class="navbar pop-in">
+            <div class="flex items-center gap-3">
+                <div class="logo-emoji">👗✨</div>
+                <div class="logo-text">StyleGenie AI</div>
+            </div>
+            
+            <div class="nav-actions">
+                <button id="open-chat-btn" class="primary-btn chat-nav-btn" style="background: linear-gradient(135deg, #FFB6B9 0%, #FEC8D8 100%);">
+                    Chat with Stylist AI
+                </button>
+                
+                <div class="profile-menu">
+                    <button id="profile-toggle" class="profile-btn-figma" style="background: linear-gradient(135deg, #D6EAF8 0%, #E6E6FA 100%);">
+                        <i class="fa fa-user"></i>
+                    </button>
+                    <div id="profile-dropdown" class="dropdown-content hidden pop-in">
+                        <a href="#" id="nav-saves"><i class="fa fa-heart"></i> Collection</a>
+                        <a href="#" id="nav-history"><i class="fa fa-history"></i> History</a>
+                        <a href="#" id="logout-btn"><i class="fa fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-content">
+            <!-- 1. Welcome Card with Stats -->
+            <div class="welcome-card glass-panel pop-in" style="background: linear-gradient(135deg, rgba(250, 218, 221, 0.3) 0%, rgba(230, 230, 250, 0.3) 100%); border: 1px solid rgba(250, 218, 221, 0.5);">
+                <div class="welcome-text">
+                    <h1 id="welcome-user">Welcome back, Anughna 👋</h1>
+                    <p>Let's find your perfect style today</p>
+                </div>
+                <div class="welcome-stats">
+                    <div class="stat-item">
+                        <span class="stat-num gradient-text" id="stat-saved">0</span>
+                        <span class="stat-label">Saved Styles</span>
+                    </div>
+                    <div class="stat-item border-left">
+                        <span class="stat-num gradient-text-2" id="stat-recs">0</span>
+                        <span class="stat-label">Recommendations</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Suggestions & Activity Grid -->
+            <div class="dash-grid">
+                <div class="quick-suggestions glass-panel contained-box">
+                    <h3>Quick Suggestions</h3>
+                    <div class="suggestion-grid">
+                        <div class="sug-card shadow-sm" onclick="setQuery('Summer casual outfit')">
+                            <div class="sug-icon">☀️</div>
+                            <span>Summer casual outfit</span>
+                        </div>
+                        <div class="sug-card shadow-sm" onclick="setQuery('Evening party look')">
+                            <div class="sug-icon">🌙</div>
+                            <span>Evening party look</span>
+                        </div>
+                        <div class="sug-card shadow-sm" onclick="setQuery('Business formal')">
+                            <div class="sug-icon">💼</div>
+                            <span>Business formal</span>
+                        </div>
+                        <div class="sug-card shadow-sm" onclick="setQuery('Weekend brunch')">
+                            <div class="sug-icon">🥂</div>
+                            <span>Weekend brunch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity glass-panel contained-box">
+                    <div class="flex-between">
+                        <h3>Recent Activity</h3>
+                        <a href="#" class="view-all">View all</a>
+                    </div>
+                    <div class="activity-list" id="activity-list">
+                        <!-- Items like "Pastel Dream" will go here -->
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fa fa-sparkles"></i></div>
+                            <div class="activity-info">
+                                <p class="activity-title">Pastel Dream</p>
+                                <p class="activity-time">2 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Tabbed Input Panel -->
+            <div class="input-container glass-panel">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="upload"><i class="fa fa-image"></i> Upload Image</button>
+                    <button class="tab-btn" data-tab="describe"><i class="fa fa-font"></i> Describe Style</button>
+                    <button class="tab-btn" data-tab="preferences"><i class="fa fa-cog"></i> Set Preferences</button>
+                </div>
+
+                <div class="tab-content active" id="tab-upload">
+                    <input type="file" id="file-input" accept="image/*" class="hidden" style="display: none;">
+                    <div class="drag-drop-zone" id="drop-zone">
+                        <i class="fa fa-cloud-upload-alt fa-3x pointer-none"></i>
+                        <p class="pointer-none">Upload Your Outfit Photo</p>
+                        <small class="pointer-none">Drag & drop your image here, or click to browse</small>
+                        <img id="image-preview" src="" alt="Preview" class="hidden pointer-none">
+                        <button id="clear-image" class="hidden"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-describe">
+                    <h3>Describe Your Desired Style</h3>
+                    <textarea id="text-query" placeholder="e.g. I want a casual summer look with pastel colors..."></textarea>
+                    <div class="sug-pills">
+                        <span>Suggestions:</span>
+                        <button onclick="setQuery('Casual weekend look')">Casual weekend look</button>
+                        <button onclick="setQuery('Professional attire')">Professional attire</button>
+                        <button onclick="setQuery('Date night outfit')">Date night outfit</button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-preferences">
+                    <h3>Refine Your Context</h3>
+                    <div class="context-toggles">
+                        <select id="query-occasion">
+                            <option value="">Occasion (Any)</option>
+                            <option value="Casual">Casual</option>
+                            <option value="Formal">Formal</option>
+                            <option value="Business">Business</option>
+                            <option value="Party">Party</option>
+                            <option value="Date">Date</option>
+                        </select>
+                        <select id="query-season">
+                            <option value="">Season (Any)</option>
+                            <option value="Spring">Spring</option>
+                            <option value="Summer">Summer</option>
+                            <option value="Fall">Fall</option>
+                            <option value="Winter">Winter</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="analyze-btn" class="primary-btn bottom-cta">
+                    ✨ Get Styling Advice
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Overlay for Chat/Modals -->
+    <div id="ui-overlay" class="ui-overlay hidden"></div>
+
+    <!-- Slide-in Chat Sidebar -->
+    <div id="chat-panel" class="chat-sidebar hidden">
+        <div class="chat-bg-blur"></div>
+            <div class="chat-header">
+                <h3><i class="fa fa-sparkles"></i> AI Stylist <br><small style="font-weight: normal; font-size: 12px; color: var(--text-muted);">Online</small></h3>
+                <div class="header-actions">
+                    <button id="resize-chat" class="icon-btn" title="Toggle Size"><i class="fa fa-expand-alt"></i></button>
+                    <button id="close-chat" class="icon-btn" title="Close"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <div class="chat-suggestions">
+                <p>Quick suggestions:</p>
+                <div class="suggestion-chips">
+                    <button id="surprise-me-btn" class="sug-btn" style="background: linear-gradient(135deg, #FFB6B9 0%, #FEC8D8 100%); border: none; font-weight: bold;">🎲 Surprise Me</button>
+                    <button class="sug-btn">Suggest outfit for party</button>
+                    <button class="sug-btn">What suits my skin tone?</button>
+                    <button class="sug-btn">Summer casual ideas</button>
+                    <button class="sug-btn">Professional attire</button>
+                </div>
+            </div>
+            <div class="chat-body" id="chat-messages">
+                <div class="message ai">Hi! I'm your AI styling assistant. How can I help you look fabulous today?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Ask me anything about styling...">
+                <button id="send-chat"><i class="fa fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESPONSE MODAL -->
+    <div id="response-modal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <button class="close-modal"><i class="fa fa-times"></i></button>
+            <h2>Your AI Style Recommendations</h2>
+            
+            <div class="modal-body">
+                <!-- Advice Section (Vertical Scroll) -->
+                <div class="advice-section" id="advice-content">
+                    <div class="loader"></div>
+                    <p>Analyzing style...</p>
+                </div>
+                
+                <!-- Outfits Section (Horizontal Scroll) -->
+                <h3 class="mt-2">Outfit Matches</h3>
+                <div class="outfit-carousel" id="outfit-results">
+                    <!-- Cards injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History / Saved Outfits Modal -->
+    <div id="saves-modal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <button class="close-modal"><i class="fa fa-times"></i></button>
+            <h2 id="saves-title">Your Collection</h2>
+            <div class="list-body" id="saves-content">
+                <!-- List data injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

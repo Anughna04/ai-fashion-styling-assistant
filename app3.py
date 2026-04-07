@@ -15,16 +15,21 @@ import numpy as np
 import faiss
 import pickle
 from fashion_models import FashionCLIP, FashionBERT, get_fashion_models
-from google import genai
-from dotenv import load_dotenv
 import os
 import io
 import base64
+from google import genai
+from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
+api_key = os.getenv("GEMINI_API_KEY")
+if api_key:
+    print(f"DEBUG (Advice): Active GEMINI_API_KEY: {api_key[:6]}...{api_key[-4:]}")
+else:
+    print("DEBUG (Advice): Active GEMINI_API_KEY: MISSING")
 
 try:
-    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+    gemini_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     GEMINI_AVAILABLE = True
 except Exception:
     GEMINI_AVAILABLE = False
@@ -186,88 +191,90 @@ def filter_by_context(items, occasion, season):
 
     return filtered
 
-
 def generate_styling_advice(items, occasion, season, query):
+    import os
+    from google import genai
+
     if not items:
-        return "No items found matching your criteria."
+        return "I couldn’t find matching items, but I’d suggest going for a clean, versatile look with neutral tones and minimal accessories."
 
     items_text = "\n".join([
         f"- {item['name']}: {item.get('description', 'Fashion item')}"
         for item in items[:5]
     ])
 
-    if GEMINI_AVAILABLE:
+    api_key = os.getenv("GEMINI_API_KEY")
+
+    if GEMINI_AVAILABLE and api_key:
         try:
-            model = genai.GenerativeModel("gemini-1.5-flash")
-            prompt = f"""As a fashion stylist, provide detailed advice for:
+            client = genai.Client(api_key=api_key)
 
-Query: {query}
-Occasion: {occasion or 'Any'}
-Season: {season or 'Any'}
+            prompt = f"""You are Genie — a senior fashion editor and personal stylist.
 
-Available items:
-{items_text}
+            A user is looking for outfit recommendations. Based on the context and available wardrobe items below, 
+            create exactly 2 complete, distinct styled looks. The looks should feel like editorial suggestions — 
+            specific, considered, and wearable — not generic AI fashion advice.
 
-Provide:
-1. Complete outfit combinations (2-3 looks)
-2. Color coordination tips
-3. Jewelry recommendations (gold/silver, statement/delicate)
-4. Footwear suggestions with heel heights
-5. Accessory ideas (bags, belts, scarves)
-6. Fabric and texture mixing advice
-7. Styling techniques (tucking, layering, proportions)
+            ---
 
-Be specific and practical."""
-            response = model.generate_content(prompt)
-            return response.text
-        except Exception:
-            pass
+            CONTEXT:
+            Occasion: {occasion or "not specified — treat as smart casual"}
+            Season / Weather: {season or "current season — suggest accordingly"}
+            User's query or description: {query or "general styling request"}
 
-    # Fallback advice
-    advice = f"""## 🎨 Styling Recommendations
+            ---
 
-**Outfit Combinations:**
-Based on your search, I found {len(items)} matching items. Here's how to style them:
+            AVAILABLE WARDROBE ITEMS (draw from these where relevant):
+            {items_text}
 
-**Color Coordination:**
-- Mix neutrals with one accent color for balanced looks
-- Consider your skin tone when choosing colors
-- White, navy, and black are versatile bases
+            ---
 
-**Jewelry & Accessories:**
-- Gold jewelry: Best with warm tones (coral, burgundy, brown)
-- Silver jewelry: Perfect with cool tones (blue, grey, purple)
-- Statement pieces: Wear with simple outfits
-- Delicate jewelry: Layer for subtle elegance
+            YOUR OUTPUT — write exactly this structure, no bullet points, no headers, no JSON:
 
-**Footwear Selection:**
-- Casual: Sneakers or ankle boots
-- Business: Closed-toe heels or loafers
-- Formal: Classic pumps or strappy heels
-- Date night: Block heels or elegant flats
+            Look 1 — [give it a short editorial name, e.g. "The Daytime Edit" or "Evening Ease"]:
+            Write 3-4 flowing sentences that cover:
+            - Which specific garments you're combining and how (tucked, draped, layered, belted, etc.)
+            - The full colour story: primary colour, accent, and how they complement each other
+            - Footwear: exact style, heel height if relevant, colour (e.g. "pointed kitten-heel mules in dusty rose")
+            - Bag: specific type and material (e.g. "a structured mini tote in cognac leather")
+            - Jewellery: be precise and complete — earrings, neckpiece, bangles/bracelet, rings if relevant
+            (e.g. "Layer a delicate gold chain over the neckline, add small hoop earrings and one thin bangle")
+            - One finishing detail: a lip colour, a hair suggestion, or how to carry the look
 
-**Seasonal Tips for {season or 'All Seasons'}:**
-"""
+            [blank line between looks]
 
-    if season == "Summer":
-        advice += "- Choose breathable fabrics like cotton and linen\n- Opt for lighter colors\n- Add sun hat and sunglasses"
-    elif season == "Winter":
-        advice += "- Layer with warm fabrics\n- Add scarves and boots\n- Rich, deep colors work well"
-    elif season == "Spring":
-        advice += "- Mix pastels with neutrals\n- Light layering pieces\n- Floral patterns are perfect"
-    elif season == "Fall":
-        advice += "- Earth tones and jewel colors\n- Layer textures and fabrics\n- Add ankle boots and scarves"
-    else:
-        advice += "- Build a versatile capsule wardrobe\n- Invest in quality basics\n- Mix and match pieces"
+            Look 2 — [editorial name]:
+            Same structure as Look 1 — but make this distinctly different in mood, silhouette, or formality.
+            If Look 1 was polished, make Look 2 relaxed. If Look 1 was Western, make Look 2 Indian or fusion.
+            Cover the same 6 elements.
 
-    advice += "\n\n**Pro Tips:**\n"
-    advice += "- Balance proportions: fitted top + loose bottom or vice versa\n"
-    advice += "- Rule of three: Limit outfits to 3 main colors\n"
-    advice += "- One statement piece per outfit\n"
-    advice += "- Confidence is your best accessory!"
+            ---
 
-    return advice
+            TONE RULES:
+            - Write in a calm, editorial voice — like Vogue India or Harper's Bazaar, not Instagram
+            - No hashtags, no markdown symbols, no emojis, no bullet points
+            - Do not start with "Of course", "Sure!", "Absolutely!" or any filler opener
+            - No generic phrases like "This look is perfect for..." — just describe the look directly
+            - The two looks must feel meaningfully different — different energy, not just different colours
 
+            Now write the two looks:"""
+
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt,
+                config={
+                    'max_output_tokens': 3000,
+                    'temperature': 0.7
+                }
+            )
+
+            return response.text.strip()
+
+        except Exception as e:
+            print(f"ERROR in styling advice: {e}")
+
+    # fallback
+    return f"A simple and elegant look suitable for {occasion or 'any occasion'} during {season or 'this season'}."
 
 # ─────────────────────────────────────────────────────────────
 #  STREAMLIT APP
