@@ -13,23 +13,24 @@ StyleGenie AI is a high-fidelity, multimodal fashion recommendation system. It c
 ## 📊 System Architecture
 
 ```mermaid
-graph TD
-    User((User)) -->|Browser| Frontend[Vanilla HTML/JS Frontend]
-    Frontend -->|REST API| Backend[FastAPI Server]
-    
-    subgraph AI_Engine [AI & Vector Search]
-        Backend -->|Query CLIP| CLIP[Fashion CLIP Model]
-        Backend -->|Search| FAISS[FAISS Vector Index]
-        Backend -->|Contextual Reasoning| Gemini[Gemini 2.5 Flash]
-    end
-    
-    subgraph Storage [Persistence]
-        Backend -->|CRUD| DB[(SQLite Database)]
-        FAISS <-->|Metadata| PKL[Image Metadata .pkl]
-    end
+flowchart TD
+    A[User Input (Image + Text)] --> B[Input Processing Layer]
+    B --> C[Multimodal Embedding (Fashion-CLIP)]
+    B --> D[Query Understanding (FashionBERT)]
+    C --> E[FAISS Vector Index]
+    D --> F[Attribute Extraction]
+    E --> G[Top-K Retrieval]
+    F --> H[Context Filtering (Occasion, Season)]
+    G --> H
+    H --> I[RAG Context Builder]
+    I --> J[LLM Reasoning (Groq - Llama 3.3)]
+    J --> K[Styled Recommendations]
+    K --> L[Streamlit UI Output]
 ```
 
-## 🔄 Project Workflow
+---
+
+## 🔄 Workflow
 
 ```mermaid
 sequenceDiagram
