@@ -10,24 +10,27 @@ StyleGenie AI is a high-fidelity, multimodal fashion recommendation system. It c
 - **💎 Personal Collection**: Save your favorite looks and view your styling history anytime.
 - **⚙️ Contextual Intelligence**: Filters results based on occasion (Formal, Casual, Party) and season (Summer, Winter, Fall, Spring).
 
+## 🎥 Demo Video
+
+[![Watch Demo](demo.png)](https://drive.google.com/file/d/1oVDuL5abXoVkaZz3j2Zl_XIpO_-oWhOd/view?usp=sharing)
+
 ## 📊 System Architecture
 
 ```mermaid
 flowchart TD
-    A[User Input (Image + Text)] --> B[Input Processing Layer]
-    B --> C[Multimodal Embedding (Fashion-CLIP)]
-    B --> D[Query Understanding (FashionBERT)]
+    A[User Input Image and Text] --> B[Input Processing Layer]
+    B --> C[Multimodal Embedding Fashion CLIP]
+    B --> D[Query Understanding FashionBERT]
     C --> E[FAISS Vector Index]
     D --> F[Attribute Extraction]
-    E --> G[Top-K Retrieval]
-    F --> H[Context Filtering (Occasion, Season)]
+    E --> G[Top K Retrieval]
+    F --> H[Context Filtering Occasion Season]
     G --> H
     H --> I[RAG Context Builder]
-    I --> J[LLM Reasoning (Groq - Llama 3.3)]
+    I --> J[LLM Reasoning Groq Llama 3.3]
     J --> K[Styled Recommendations]
     K --> L[Streamlit UI Output]
 ```
-
 ---
 
 ## 🔄 Workflow
